@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Under Construction</title>
+  <style>
+    :root {
+      --bg: #05070a;
+      --bg-soft: #0a0f14;
+      --panel: rgba(10, 15, 20, 0.82);
+      --line: rgba(0, 255, 163, 0.16);
+      --text: #d7ffe9;
+      --muted: #7fa592;
+      --accent: #00ffa3;
+      --accent-soft: rgba(0, 255, 163, 0.18);
+      --warning: #8df8c7;
+      --shadow: 0 0 30px rgba(0, 255, 163, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0,255,163,0.08), transparent 28%),
+        radial-gradient(circle at 80% 30%, rgba(0,255,163,0.04), transparent 25%),
+        linear-gradient(180deg, #030508 0%, #05070a 40%, #020406 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,163,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,163,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at center, black 55%, transparent 95%);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 163, 0.05) 50%, transparent 100%);
+      background-size: 100% 6px;
+      animation: scan 8s linear infinite;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      pointer-events: none;
+      background-image: radial-gradient(#ffffff 0.4px, transparent 0.4px);
+      background-size: 7px 7px;
+      mix-blend-mode: screen;
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .terminal {
+      position: relative;
+      width: min(880px, 100%);
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(5,7,10,0.95), rgba(7,11,15,0.85));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .terminal::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(0,255,163,0.08);
+      pointer-events: none;
+    }
+
+    .terminal::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(from 180deg, transparent, rgba(0,255,163,0.08), transparent 35%);
+      animation: rotate 14s linear infinite;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0,255,163,0.12);
+      position: relative;
+      z-index: 1;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(0,255,163,0.75);
+      box-shadow: 0 0 10px rgba(0,255,163,0.45);
+    }
+
+    .bar small {
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      padding: 38px 8px 10px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .label {
+      color: var(--accent);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 7vw, 5.4rem);
+      line-height: 0.95;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-shadow: 0 0 24px rgba(0,255,163,0.16);
+    }
+
+    h1 span {
+      display: block;
+      color: var(--accent);
+    }
+
+    p {
+      margin: 0;
+      max-width: 640px;
+      color: #b4d7c5;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 8px;
+    }
+
+    .chip {
+      border: 1px solid rgba(0,255,163,0.18);
+      background: rgba(0,255,163,0.06);
+      color: var(--warning);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding-top: 18px;
+      margin-top: 10px;
+      border-top: 1px solid rgba(0,255,163,0.12);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .blink {
+      display: inline-block;
+      width: 10px;
+      height: 1.1em;
+      background: var(--accent);
+      vertical-align: -2px;
+      margin-left: 8px;
+      animation: blink 1s steps(1) infinite;
+      box-shadow: 0 0 12px rgba(0,255,163,0.45);
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @keyframes rotate {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    @media (max-width: 640px) {
+      .terminal {
+        padding: 18px;
+      }
+
+      .content {
+        padding-top: 28px;
+      }
+
+      .footer {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <main class="wrap">
+    <section class="terminal" aria-label="Under construction notice">
+      <div class="bar">
+        <div class="dots" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <small>Secure Node / Maintenance Mode</small>
+      </div>
+
+      <div class="content">
+        <div class="label">System Message</div>
+        <h1>
+          Under
+          <span>Construction</span>
+        </h1>
+        <p>
+          This surface is being rebuilt. Infrastructure is hardening, modules are loading, and a cleaner digital front is coming online soon.
+          <span class="blink" aria-hidden="true"></span>
+        </p>
+
+        <div class="status">
+          <div class="chip">Status: Initializing</div>
+          <div class="chip">Mode: Dark Ops</div>
+          <div class="chip">Security: Active</div>
+        </div>
+
+        <div class="footer">
+          <span>&gt; Deploying soon...</span>
+          <span>&copy; 2026</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
