@@ -8,7 +8,7 @@
     :root {
       --bg: #05070a;
       --bg-soft: #0a0f14;
-      --panel: rgba(10, 15, 20, 0.82);
+      --panel: rgba(10, 15, 20, 0.88);
       --line: rgba(0, 255, 163, 0.16);
       --text: #d7ffe9;
       --muted: #7fa592;
@@ -30,7 +30,7 @@
         radial-gradient(circle at 80% 30%, rgba(0,255,163,0.04), transparent 25%),
         linear-gradient(180deg, #030508 0%, #05070a 40%, #020406 100%);
       color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       overflow: hidden;
     }
 
@@ -41,7 +41,7 @@
       background-image:
         linear-gradient(rgba(0,255,163,0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0,255,163,0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
+      background-size: 40px 40px;
       mask-image: radial-gradient(circle at center, black 55%, transparent 95%);
       pointer-events: none;
     }
@@ -52,8 +52,8 @@
       inset: 0;
       background: linear-gradient(to bottom, transparent 0%, rgba(0, 255, 163, 0.05) 50%, transparent 100%);
       background-size: 100% 6px;
-      animation: scan 8s linear infinite;
-      opacity: 0.2;
+      animation: scan 9s linear infinite;
+      opacity: 0.18;
       pointer-events: none;
     }
 
@@ -71,19 +71,19 @@
       min-height: 100vh;
       display: grid;
       place-items: center;
-      padding: 24px;
+      padding: 20px;
       position: relative;
     }
 
     .terminal {
       position: relative;
       width: min(880px, 100%);
-      padding: 22px;
       border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(5,7,10,0.95), rgba(7,11,15,0.85));
+      background: linear-gradient(180deg, rgba(5,7,10,0.97), rgba(7,11,15,0.88));
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
       overflow: hidden;
+      border-radius: 14px;
     }
 
     .terminal::before {
@@ -92,6 +92,7 @@
       inset: 0;
       border: 1px solid rgba(0,255,163,0.08);
       pointer-events: none;
+      border-radius: 14px;
     }
 
     .terminal::after {
@@ -101,7 +102,7 @@
       background: conic-gradient(from 180deg, transparent, rgba(0,255,163,0.08), transparent 35%);
       animation: rotate 14s linear infinite;
       pointer-events: none;
-      opacity: 0.35;
+      opacity: 0.28;
     }
 
     .bar {
@@ -109,15 +110,24 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding-bottom: 16px;
+      padding: 14px 18px;
       border-bottom: 1px solid rgba(0,255,163,0.12);
       position: relative;
       z-index: 1;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
     }
 
     .dots {
       display: flex;
       gap: 8px;
+      flex-shrink: 0;
     }
 
     .dots span {
@@ -130,33 +140,40 @@
 
     .bar small {
       color: var(--muted);
-      letter-spacing: 0.18em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .content {
       position: relative;
       z-index: 1;
-      padding: 38px 8px 10px;
+      padding: 28px 22px 22px;
       display: grid;
-      gap: 20px;
+      gap: 18px;
     }
 
-    .label {
+    .prompt {
+      color: var(--muted);
+      font-size: 0.92rem;
+      word-break: break-word;
+    }
+
+    .prompt .user {
       color: var(--accent);
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      font-size: 12px;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(2.6rem, 7vw, 5.4rem);
+      font-size: clamp(2.1rem, 7vw, 5rem);
       line-height: 0.95;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       text-shadow: 0 0 24px rgba(0,255,163,0.16);
+      word-break: break-word;
     }
 
     h1 span {
@@ -164,41 +181,45 @@
       color: var(--accent);
     }
 
-    p {
+    .sub {
       margin: 0;
-      max-width: 640px;
       color: #b4d7c5;
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 2.7vw, 1rem);
       line-height: 1.7;
+      max-width: 44ch;
     }
 
-    .status {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding-top: 8px;
-    }
-
-    .chip {
+    .cmd {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      max-width: 100%;
+      padding: 12px 14px;
       border: 1px solid rgba(0,255,163,0.18);
       background: rgba(0,255,163,0.06);
       color: var(--warning);
-      padding: 10px 14px;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 0.92rem;
+      overflow-wrap: anywhere;
+    }
+
+    .cmd::before {
+      content: ">";
+      color: var(--accent);
+      flex-shrink: 0;
     }
 
     .footer {
       display: flex;
       justify-content: space-between;
-      gap: 16px;
+      align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
-      padding-top: 18px;
-      margin-top: 10px;
+      padding-top: 16px;
+      margin-top: 4px;
       border-top: 1px solid rgba(0,255,163,0.12);
       color: var(--muted);
-      font-size: 0.85rem;
+      font-size: 0.84rem;
     }
 
     .blink {
@@ -226,16 +247,44 @@
     }
 
     @media (max-width: 640px) {
+      html, body {
+        overflow: auto;
+      }
+
+      .wrap {
+        min-height: 100svh;
+        padding: 14px;
+      }
+
       .terminal {
-        padding: 18px;
+        border-radius: 12px;
+      }
+
+      .terminal::before {
+        border-radius: 12px;
+      }
+
+      .bar {
+        padding: 12px 14px;
       }
 
       .content {
-        padding-top: 28px;
+        padding: 22px 14px 16px;
+        gap: 16px;
+      }
+
+      .prompt {
+        font-size: 0.82rem;
+      }
+
+      .cmd {
+        width: 100%;
+        font-size: 0.84rem;
       }
 
       .footer {
         flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -245,33 +294,33 @@
   <main class="wrap">
     <section class="terminal" aria-label="Under construction notice">
       <div class="bar">
-        <div class="dots" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="bar-left">
+          <div class="dots" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <small>root@server:~ / maintenance-shell</small>
         </div>
-        <small>Secure Node / Maintenance Mode</small>
+        <small>linux mode</small>
       </div>
 
       <div class="content">
-        <div class="label">System Message</div>
+        <div class="prompt"><span class="user">root@host</span>:~# ./launch-website.sh</div>
+
         <h1>
           Under
           <span>Construction</span>
         </h1>
-        <p>
-          This surface is being rebuilt. Infrastructure is hardening, modules are loading, and a cleaner digital front is coming online soon.
-          <span class="blink" aria-hidden="true"></span>
+
+        <p class="sub">
+          System hardening in progress.<span class="blink" aria-hidden="true"></span>
         </p>
 
-        <div class="status">
-          <div class="chip">Status: Initializing</div>
-          <div class="chip">Mode: Dark Ops</div>
-          <div class="chip">Security: Active</div>
-        </div>
+        <div class="cmd">website status: initializing</div>
 
         <div class="footer">
-          <span>&gt; Deploying soon...</span>
+          <span>&gt; online soon</span>
           <span>&copy; 2026</span>
         </div>
       </div>
